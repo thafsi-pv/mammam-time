@@ -1,0 +1,35 @@
+{
+  "name": "namaste-react-series",
+  "version": "1.0.0",
+  "description": "Namaste React Series",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thafzi/Namaste-React-Series.git"
+  },
+  "keywords": [
+    "react",
+    "react-router-dom",
+    "redux",
+    "tailwind"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thafzi/Namaste-React-Series/issues"
+  },
+  "homepage": "https://github.com/thafzi/Namaste-React-Series#readme",
+  "dependencies": {
+    "parcel": "^2.8.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "browserslist": [
+    "last 2 versions"
+  ],
+  "devDependencies": {
+    "process": "^0.11.10"
+  }
+}
