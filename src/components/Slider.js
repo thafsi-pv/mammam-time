@@ -1,51 +1,18 @@
 import React from "react";
+import { CAROUSAL_URL } from "../utils/constants";
 
-function Slider() {
+function Slider(props) {
+  const { carousal } = props;
+  const { data } = carousal;
+  console.log("🚀 ~ file: Slider.js:7 ~ Slider ~ data:", data);
   return (
     <div className="px-20  min-w-fit bg-[#181a29]">
       <div className="carousel carousel-center max-w-[1300px] mx-auto">
-        <div className="carousel-item  p-8">
-          <img
-            src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_520,h_520/rng/md/carousel/production/lyn9at38gjithnogzfui"
-            className="h-64"
-          />
-        </div>
-        <div className="carousel-item  p-8">
-          <img
-            src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_520,h_520/rng/md/carousel/production/lori508m4xps01tnywxf"
-            className="h-64"
-          />
-        </div>
-        <div className="carousel-item  p-8">
-          <img
-            src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_520,h_520/rng/md/carousel/production/dpqcjrxwruipnt1wyqnh"
-            className="h-64"
-          />
-        </div>
-        <div className="carousel-item  p-8">
-          <img
-            src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_520,h_520/rng/md/carousel/production/jmeoz6zu9fi0h9tw7xrb"
-            className="h-64"
-          />
-        </div>
-        <div className="carousel-item  p-8">
-          <img
-            src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_520,h_520/rng/md/carousel/production/ifi2lbzxeu1hvsqrsip3"
-            className="h-64"
-          />
-        </div>
-        <div className="carousel-item  p-8">
-          <img
-            src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_520,h_520/rng/md/carousel/production/oxe97jexxbnxqtbhg2zo"
-            className="h-64"
-          />
-        </div>
-        <div className="carousel-item  p-8">
-          <img
-            src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_520,h_520/rng/md/carousel/production/jmeoz6zu9fi0h9tw7xrb"
-            className="h-64"
-          />
-        </div>
+        {data?.data?.cards?.map((i) => (
+          <div className="carousel-item  p-8 object-cover transform transition duration-500 hover:scale-105 cursor-pointer">
+            <img src={CAROUSAL_URL + i.data.creativeId} className="h-64" />
+          </div>
+        ))}
       </div>
     </div>
   );
