@@ -11,10 +11,10 @@ import { useParams } from "react-router";
 import vegIcon from "../assets/img/iconVeg.png";
 import NonvegIcon from "../assets/img/iconNonVeg.png";
 import { OFFER_CARD_IMG, RES_DETAILS_URL } from "../utils/constants";
-import HomeShimmer from "./HomeShimmer";
 import { TbDiscount2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { GeoContext } from "../contexts/GeoContext";
+import ResMenuShimmer from "./ResMenuShimmer";
 
 const OfferCard = (props) => {
   const { couponCode, description, header, logoBottom } = props.offers.info;
@@ -155,24 +155,17 @@ function ResMenu() {
 
   useEffect(() => {
     getResData();
+    window.scrollTo(0, 0);
   }, []);
-  const url =
-    RES_DETAILS_URL +
-    "lat=" +
-    geoData.lat +
-    "&" +
-    "lng=" +
-    geoData.lng +
-    "&restaurantId=" +
-    id;
-  console.log("🚀 ~ file: ResMenu.js:160 ~ ResMenu ~ url:", url);
+
+  const url = `${RES_DETAILS_URL}lat=${geoData.lat}&lng=${geoData.lng}&restaurantId=${id}`;
   const getResData = async () => {
     let data = await fetch(url);
     let json = await data.json();
     setResDetails(json.data);
   };
   return resDetails?.length === 0 ? (
-    <HomeShimmer />
+    <ResMenuShimmer />
   ) : (
     <div className="mt-20 md:w-3/8 sm:w-1/2 pt-5 mx-auto min-h-screen">
       <div className="flex justify-between items-center">
@@ -198,7 +191,7 @@ function ResMenu() {
         <div className="flex flex-col">
           <p className="text-[20px] font-bold">{name}</p>
           <div>
-            <p className="text-xs">{cuisines.join(", ")}</p>
+            <p className="text-xs">{cuisines?.join(", ")}</p>
             <p className="text-xs">{areaName}</p>
             <p className="flex items-center text-xs pt-3">
               <MdOutlineDeliveryDining className="w-5 h-5 mr-2" /> {text}
@@ -226,7 +219,7 @@ function ResMenu() {
       </div>
       <div>
         <div className="carousel carousel-center space-x-3 mt-3 mx-auto">
-          {offers.map((off, index) => (
+          {offers?.map((off, index) => (
             <OfferCard offers={off} key={index} />
           ))}
         </div>
@@ -239,7 +232,7 @@ function ResMenu() {
           </label>
         </div>
       </div>
-      {cards.map((itm, index) => (
+      {cards?.map((itm, index) => (
         <GroupedMenuDetails menu={itm} key={index} />
       ))}
 

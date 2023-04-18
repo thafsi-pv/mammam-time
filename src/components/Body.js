@@ -3,32 +3,47 @@ import Slider from "./Slider";
 import ResCard from "./ResCard";
 import { API, API_AFTER_GEO, API_BEFORE_GEO } from "../utils/constants";
 import HomeShimmer from "./HomeShimmer";
+import ResMenuShimmer from "./ResMenuShimmer"
 import { GeoContext } from "../contexts/GeoContext";
 
 const Body = () => {
-
-const {geoData}=useContext(GeoContext)
+  const { geoData } = useContext(GeoContext);
 
   const openRes = "";
   let [restList, setResList] = useState([]);
+  let [moreList,setmoreList]=useState([{}])
   console.log("🚀 ~ file: Body.js:8 ~ Body ~ restList:", restList);
   let [carousal, setCarousal] = useState([]);
   let [searchText, setSearchText] = useState([]);
 
   useEffect(() => {
     getResList();
+    console.log("fethc useEffect");
+    
   }, [geoData]);
-  const url=API_BEFORE_GEO+"lat="+geoData.lat+"&lng="+geoData.lng+API_AFTER_GEO
+
+useEffect(()=>{
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+})
+
+  const url =
+    API_BEFORE_GEO +
+    "lat=" +
+    geoData.lat +
+    "&lng=" +
+    geoData.lng +
+    API_AFTER_GEO;
+
   const getResList = async () => {
     try {
-        
-        console.log("getreslist useEffect")
       const response = await fetch(url);
       const data = await response.json();
       setResList(data.data.cards[2].data.data);
       setCarousal(data.data.cards[0]);
     } catch (error) {}
   };
+
   const handleSearch = (res, serchtxt) => {
     let filterData = res.filter((restu) => {
       return restu.data.name.includes(serchtxt);
@@ -36,8 +51,53 @@ const {geoData}=useContext(GeoContext)
     return filterData;
   };
 
-  return restList.length===0?<HomeShimmer/>: (
-    <div className="mt-[4rem]">
+  // Fetch more data when user scrolls to the bottom of the page
+  // useEffect(() => {
+  //   console.log("fethc useEffect");
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // });
+
+  const handleScroll = () => {
+    setmoreList=[{}]
+    if (
+      Math.round(window.innerHeight + document.documentElement.scrollTop) ===
+      document.documentElement.offsetHeight
+    ) {
+      getMoreResList();
+       
+      console.log("fetch more...");
+    }
+  };
+
+  var offset=15
+  var murl=`https://www.swiggy.com/dapi/restaurants/list/v5?lat=${geoData.lat}&lng=${geoData.lng}&offset=${offset}&sortBy=RELEVANCE&pageType=SEE_ALL&page_type=DESKTOP_SEE_ALL_LISTING`
+  const getMoreResList = async () => {
+    try {
+      const response = await fetch(murl);
+      const data = await response.json();
+
+      const curdt = restList;
+      console.log("🚀 ~ file: Body.js:74 ~ getMoreResList ~ curdt:", curdt);
+
+      const newdt = data.data.cards;
+      console.log("🚀 ~ file: Body.js:77 ~ getMoreResList ~ newdt:", newdt);
+
+
+      const updatedData = {
+        ...curdt,
+        cards: [...curdt.cards,...newdt.map((item)=>item.data)]
+      };
+      console.log("🚀 ~ file: Body.js:81 ~ getMoreResList ~ updatedData:", updatedData)
+      offset=offset+16;
+      setResList(updatedData);
+    } catch (error) {}
+  };
+
+  return restList.length === 0 ? (
+    <HomeShimmer />
+  ) : (
+    <div className="mt-[5rem]">
       <Slider carousal={carousal} />
       <div className="flex justify-end w-[1300px] m-auto p-4">
         <div className="px-3 pt-4">
@@ -108,12 +168,13 @@ const {geoData}=useContext(GeoContext)
         id="product-container"
       >
         {restList?.cards?.map((i) => (
-          <ResCard key={i.data.id} resData={i.data}/>
+          <ResCard key={i.data.id} resData={i.data} />
         ))}
       </div>
       <div className="flex justify-center m-4">
         <button className="btn loading">loading</button>
       </div>
+     
     </div>
   );
 };

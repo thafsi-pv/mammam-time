@@ -28,7 +28,7 @@ function ResCard(prop) {
           <div className="card-body px-3 gap-0 pt-4">
             <h2 className="card-title">{name}</h2>
             <p className="text-xs font-semibold text-gray-500">
-              {cuisines.join(", ")}
+              {cuisines?.join(", ")}
             </p>
             <div className="flex justify-between pt-3">
               <div

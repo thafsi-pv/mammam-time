@@ -25,11 +25,13 @@
   "homepage": "https://github.com/thafzi/Namaste-React-Series#readme",
   "dependencies": {
     "daisyui": "^2.51.5",
+    "formik": "^2.2.9",
     "parcel": "^2.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
-    "react-router-dom": "^6.10.0"
+    "react-router-dom": "^6.10.0",
+    "yup": "^1.0.2"
   },
   "browserslist": [
     "last 2 versions"

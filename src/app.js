@@ -7,6 +7,9 @@ import ResMenu from "./components/ResMenu";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Error from "./components/Error";
 import { GeoProvider } from "./contexts/GeoContext";
+import SignIn from "./components/SIgnIn";
+import Offers from "./components/Offers";
+import Search from "./components/Search";
 
 const AppLayout = () => {
   return (
@@ -34,9 +37,11 @@ const AppRouter = createBrowserRouter([
         path: "/resmenu/:id",
         element: <ResMenu />,
       },
+      { path: "/offers", element: <Offers /> },
+      {path:"/search",element:<Search/>}
     ],
   },
-  { path: "resmenu", element: <ResMenu /> },
+  { path: "/signin", element: <SignIn /> },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root")).render(

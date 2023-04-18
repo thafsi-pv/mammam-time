@@ -1,22 +1,30 @@
-import { BiMessageDetail } from "react-icons/bi";
+import { BiSearch, BiUser } from "react-icons/bi";
 import { IoIosHelpBuoy } from "react-icons/io";
-import { GiCharacter } from "react-icons/gi";
+import { CiPercent } from "react-icons/ci";
 import { LOGO_URL } from "../utils/constants";
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { GeoContext } from "../contexts/GeoContext";
+import { MdLocalOffer } from "react-icons/md";
+
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  const navigate = useNavigate();
   const { geoData, setGeoData } = useContext(GeoContext);
   //setData({ lng: "11.2587531", lat: "75.78041" });
   const handleLocationChange = (e) => {
     const lng = e.target.options[e.target.selectedIndex].getAttribute("lng");
     const lat = e.target.options[e.target.selectedIndex].getAttribute("lat");
     setGeoData({ lng: lng, lat: lat });
+    navigate("/");
   };
 
+  useEffect(() => {
+    setGeoData({ lat: "11.2587531", lng: "75.78041" });
+  }, []);
 
   return (
-    <div className="w-screen  fixed top-0 z-10 bg-white shadow-md">
+    <div className="w-screen  fixed top-0 z-10 bg-white shadow-md h-20">
       <div className="navbar bg-white  w-[1300px] mx-auto">
         <div className="flex-1">
           <Link to="/">
@@ -26,10 +34,10 @@ const Header = () => {
               alt="mammam Logo"
             ></img>
           </Link>
-          <div>
+          <div className="ml-5">
             <select
               onChange={handleLocationChange}
-              className="select w-full max-w-xs text-gray-400 focus:border-none"
+              className="select w-full max-w-xs text-gray-400 hover:border-none selection:border-none focus:border-none"
             >
               <option lat="11.2587531" lng="75.78041" selected>
                 Kozhikode, Kerala
@@ -49,18 +57,22 @@ const Header = () => {
             </select>
           </div>
         </div>
-        <div className="flex-none space-x-6">
+        <div className="flex-none space-x-10">
+          <Link to="search">
+            <div className="flex items-center hover:text-orange-500 hover:cursor-pointer font-semibold">
+              <BiSearch className="mr-2 w-5 h-5" />
+              Search
+            </div>
+          </Link>
+          <Link to="/offers">
+            <div className="flex items-center hover:text-orange-500 hover:cursor-pointer font-semibold">
+              <CiPercent className="mr-2 w-5 h-5" />
+              Offers
+            </div>
+          </Link>
           <div className="flex items-center hover:text-orange-500 hover:cursor-pointer font-semibold">
-            <GiCharacter className="mr-2" />
-            About Us
-          </div>
-          <div className="flex items-center hover:text-orange-500 hover:cursor-pointer font-semibold">
-            <IoIosHelpBuoy className="mr-2" />
+            <IoIosHelpBuoy className="mr-2 w-5 h-5" />
             Help
-          </div>
-          <div className="flex items-center hover:text-orange-500 hover:cursor-pointer font-semibold">
-            <BiMessageDetail className="mr-2" />
-            Contact Us
           </div>
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle">
@@ -117,7 +129,7 @@ const Header = () => {
                 <a>Settings</a>
               </li>
               <li>
-                <a>Logout</a>
+                <Link to="/signin">Logout</Link>
               </li>
             </ul>
           </div>
