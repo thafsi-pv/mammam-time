@@ -13,7 +13,7 @@ export const RES_DETAILS_URL="https://www.swiggy.com/dapi/menu/pl?page-type=REGU
 export const SEARCH_URL="https://www.swiggy.com/dapi/restaurants/search/suggest?"
 
 // https://www.swiggy.com/dapi/offers/restaurant?lat=12.9715987&lng=77.5945627
-export const OFFER_URL="https://www.swiggy.com/dapi/offers/restaurant?"
+export const OFFER_URL="https://www.swiggy.com/api/seo/getListing?"
 
 // https://www.swiggy.com/dapi/offers/payment?lat=11.2587531&lng=75.78041&offset=0
 export const PAYMENT_OFFER_URL="https://www.swiggy.com/dapi/offers/payment?"

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { IMAGE_URL } from "../utils/constants";
 
 function ResCard(prop) {
+  console.log("🚀 ~ ResCard ~ prop:", prop)
   let {
     cloudinaryImageId,
     name,

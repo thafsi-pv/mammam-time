@@ -7,30 +7,32 @@ import Coupons from "./Coupons";
 const Offers = () => {
   const { geoData } = useContext(GeoContext);
   const [offerRes, setOfferRes] = useState([{}]);
-  const[paymentOffer, setPaymentOffer]=useState([{}])
-  console.log("🚀 ~ file: Offers.js:11 ~ Offers ~ paymentOffer:", paymentOffer)
+  console.log("🚀 ~ Offers ~ offerRes:", offerRes)
+  const [paymentOffer, setPaymentOffer] = useState([{}])
   const [active, setActive] = useState(1);
   const handleActive = (a) => {
     setActive(a);
   };
 
   useEffect(() => {
-    if(active==1)
+    // if (active == 1)
     getRestaurantOffer();
-    else
-    getPaymentOffer();
-  }, [active]);
+    // else
+    //   getPaymentOffer();
+  }, []);
 
   const urlres = `${OFFER_URL}lat=${geoData.lat}&lng=${geoData.lng}`;
   const getRestaurantOffer = async () => {
+    console.log("🚀 ~ Offers ~ urlres:", urlres)
     const data = await fetch(urlres);
     const json = await data.json();
-    setOfferRes(json?.data?.cards);
+    console.log("🚀 ~ getRestaurantOffer ~ json:", json)
+    setOfferRes(json?.data?.success?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
   };
-  const urlpay=`${PAYMENT_OFFER_URL}lat=${geoData.lat}&lng=${geoData.lng}&offset=0`
-  const getPaymentOffer=async()=>{
-    const data=await fetch(urlpay);
-    const json= await data.json();
+  const urlpay = `${PAYMENT_OFFER_URL}lat=${geoData.lat}&lng=${geoData.lng}&offset=0`
+  const getPaymentOffer = async () => {
+    const data = await fetch(urlpay);
+    const json = await data.json();
     setPaymentOffer(json.data)
   }
 
@@ -56,29 +58,25 @@ const Offers = () => {
       <div className=" border-b w-[75%] mx-auto">
         <div className="flex px-0 space-x-7">
           <div
-            className={`py-5  cursor-pointer ease-in duration-300 ${
-              active === 1 ? "border-b-2 border-black " : "border-none"
-            }`}
+            className={`py-5  cursor-pointer ease-in duration-300 ${active === 1 ? "border-b-2 border-black " : "border-none"
+              }`}
             onClick={() => handleActive(1)}
           >
             <p
-              className={`text-lg ${
-                active === 1 ? "font-semibold text-black" : "text-gray-500"
-              }`}
+              className={`text-lg ${active === 1 ? "font-semibold text-black" : "text-gray-500"
+                }`}
             >
               Restaurant Offers
             </p>
           </div>
           <div
-            className={`py-5 cursor-pointer ease-in duration-300 ${
-              active === 2 ? " border-b-2 border-black" : ""
-            }`}
+            className={`py-5 cursor-pointer ease-in duration-300 ${active === 2 ? " border-b-2 border-black" : ""
+              }`}
             onClick={() => handleActive(2)}
           >
             <p
-              className={`text-lg ${
-                active === 2 ? "font-semibold text-black" : "text-gray-500"
-              }`}
+              className={`text-lg ${active === 2 ? "font-semibold text-black" : "text-gray-500"
+                }`}
             >
               Pyment Offers/Coupons
             </p>
@@ -86,10 +84,10 @@ const Offers = () => {
         </div>
       </div>
 
-      {offerRes?.length != 0 && active == 1 ? (
-       <div className="w-[75%] mx-auto"> <ResOffer offerRes={offerRes} /></div>
+      {offerRes?.length != 1 && active == 1 ? (
+        <div className="w-[75%] mx-auto"> <ResOffer offerRes={offerRes} /></div>
       ) : active == 2 ? (
-       <div className="w-[75%] mx-auto"> <Coupons payment={paymentOffer?.cards}/></div>
+        <div className="w-[75%] mx-auto"> <Coupons payment={paymentOffer?.cards} /></div>
       ) : (
         ""
       )}

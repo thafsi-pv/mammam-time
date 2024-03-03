@@ -5,13 +5,16 @@ import { API, API_AFTER_GEO, API_BEFORE_GEO } from "../utils/constants";
 import HomeShimmer from "./HomeShimmer";
 import ResMenuShimmer from "./ResMenuShimmer"
 import { GeoContext } from "../contexts/GeoContext";
+import WhatsOnMind from "./WhatsOnMind";
 
 const Body = () => {
   const { geoData } = useContext(GeoContext);
 
   const openRes = "";
   let [restList, setResList] = useState([]);
-  let [moreList,setmoreList]=useState([{}])
+  let [whatsOnMind, setWhatsOnMind] = useState([]);
+  console.log("🚀 ~ Body ~ whatsOnMind:", whatsOnMind)
+  let [moreList, setmoreList] = useState([{}])
   console.log("🚀 ~ file: Body.js:8 ~ Body ~ restList:", restList);
   let [carousal, setCarousal] = useState([]);
   let [searchText, setSearchText] = useState([]);
@@ -19,13 +22,13 @@ const Body = () => {
   useEffect(() => {
     getResList();
     console.log("fethc useEffect");
-    
+
   }, [geoData]);
 
-useEffect(()=>{
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-})
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  })
 
   const url =
     API_BEFORE_GEO +
@@ -39,9 +42,11 @@ useEffect(()=>{
     try {
       const response = await fetch(url);
       const data = await response.json();
-      setResList(data.data.cards[2].data.data);
-      setCarousal(data.data.cards[0]);
-    } catch (error) {}
+      console.log("🚀 ~ getResList ~ data:", data)
+      setResList(data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants);
+      setWhatsOnMind(data.data.cards[0].card.card.imageGridCards.info)
+      // setCarousal(data.data.cards[0]);
+    } catch (error) { }
   };
 
   const handleSearch = (res, serchtxt) => {
@@ -59,19 +64,20 @@ useEffect(()=>{
   // });
 
   const handleScroll = () => {
-    setmoreList=[{}]
+    setmoreList = [{}]
     if (
       Math.round(window.innerHeight + document.documentElement.scrollTop) ===
       document.documentElement.offsetHeight
     ) {
       getMoreResList();
-       
+
       console.log("fetch more...");
     }
   };
 
-  var offset=15
-  var murl=`https://www.swiggy.com/dapi/restaurants/list/v5?lat=${geoData.lat}&lng=${geoData.lng}&offset=${offset}&sortBy=RELEVANCE&pageType=SEE_ALL&page_type=DESKTOP_SEE_ALL_LISTING`
+  var offset = 15
+  //var murl=`https://www.swiggy.com/dapi/restaurants/list/v5?lat=${geoData.lat}&lng=${geoData.lng}&offset=${offset}&sortBy=RELEVANCE&pageType=SEE_ALL&page_type=DESKTOP_SEE_ALL_LISTING`
+  var murl = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=9.9312328&lng=76.26730409999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
   const getMoreResList = async () => {
     try {
       const response = await fetch(murl);
@@ -86,19 +92,20 @@ useEffect(()=>{
 
       const updatedData = {
         ...curdt,
-        cards: [...curdt.cards,...newdt.map((item)=>item.data)]
+        cards: [...curdt.cards, ...newdt.map((item) => item.data)]
       };
       console.log("🚀 ~ file: Body.js:81 ~ getMoreResList ~ updatedData:", updatedData)
-      offset=offset+16;
+      offset = offset + 16;
       setResList(updatedData);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return restList.length === 0 ? (
     <HomeShimmer />
   ) : (
-    <div className="mt-[5rem]">
-      <Slider carousal={carousal} />
+    <div className="mt-[8rem] w-[1300px] m-auto">
+      {/* <Slider carousal={carousal} /> */}
+      <WhatsOnMind items={whatsOnMind} />
       <div className="flex justify-end w-[1300px] m-auto p-4">
         <div className="px-3 pt-4">
           <div className="input-group ">
@@ -167,14 +174,14 @@ useEffect(()=>{
         className="flex flex-wrap items-start w-[1300px] m-auto justify-between md:columns-4 sm:columns-2"
         id="product-container"
       >
-        {restList?.cards?.map((i) => (
-          <ResCard key={i.data.id} resData={i.data} />
+        {restList?.map((i) => (
+          <ResCard key={i.info.id} resData={i.info} />
         ))}
       </div>
       <div className="flex justify-center m-4">
         <button className="btn loading">loading</button>
       </div>
-     
+
     </div>
   );
 };
