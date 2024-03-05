@@ -8,8 +8,8 @@ import {
 } from "react-icons/md";
 import { HiOutlineCurrencyRupee } from "react-icons/hi";
 import { useParams } from "react-router";
-import vegIcon from "../assets/img/iconVeg.png";
-import NonvegIcon from "../assets/img/iconNonVeg.png";
+// import vegIcon from "../assets/img/iconVeg.png";
+// import NonvegIcon from "../assets/img/iconNonVeg.png";
 import { OFFER_CARD_IMG, RES_DETAILS_URL } from "../utils/constants";
 import { TbDiscount2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
@@ -60,7 +60,7 @@ const GroupedMenuDetails = (props) => {
         {itemCards.map((item, index) => (
           <div key={index} className="flex justify-between border-b py-3">
             <div className="flex-1">
-              <img
+              {/* <img
                 className="w-4 h-4"
                 src={
                   item?.card?.info?.itemAttribute?.vegClassifier == "NONVEG"
@@ -68,7 +68,7 @@ const GroupedMenuDetails = (props) => {
                     : vegIcon
                 }
                 alt=""
-              />
+              /> */}
               <p className="text-md font-semibold text-gray-900">
                 {item.card.info.name}
               </p>
